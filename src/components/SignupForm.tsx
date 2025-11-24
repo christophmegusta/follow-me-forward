@@ -30,97 +30,144 @@ const SignupForm = () => {
   };
 
   return (
-    <section className="py-20 md:py-32 bg-background">
-      <div className="container px-6 md:px-12">
+    <section id="signup" className="py-24 md:py-40 relative overflow-hidden">
+      {/* Background Gradient */}
+      <div className="absolute inset-0 bg-gradient-soft" />
+      <div className="absolute top-0 left-0 right-0 h-[40vh] bg-gradient-glow opacity-50" />
+      
+      <div className="container px-6 md:px-12 relative z-10">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="max-w-2xl mx-auto"
+          className="max-w-3xl mx-auto"
         >
-          <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-foreground">
+          <div className="text-center mb-16">
+            <motion.div
+              initial={{ width: 0 }}
+              whileInView={{ width: "80px" }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="h-1 bg-gradient-warm mx-auto mb-8 rounded-full"
+            />
+            
+            <h2 className="text-4xl md:text-6xl font-bold mb-6 text-foreground tracking-tight">
               Werde Teil der Gemeinschaft
             </h2>
-            <p className="text-xl text-muted-foreground">
+            <p className="text-xl md:text-2xl text-muted-foreground font-light max-w-2xl mx-auto">
               Erhalte Zugang zu unserer Community und beginne deine Reise der Nachfolge
             </p>
           </div>
 
-          <div className="bg-card rounded-3xl p-8 md:p-12 shadow-warm">
-            <form onSubmit={handleSubmit} className="space-y-8">
-              <div className="space-y-4">
-                <Label className="text-lg font-semibold">
-                  Wie möchtest du kontaktiert werden?
-                </Label>
-                <RadioGroup
-                  value={contactMethod}
-                  onValueChange={(value) => setContactMethod(value as "email" | "phone")}
-                  className="grid grid-cols-2 gap-4"
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="relative group"
+          >
+            {/* Glow effect */}
+            <div className="absolute -inset-1 bg-gradient-warm opacity-10 blur-2xl rounded-3xl group-hover:opacity-20 transition-opacity duration-500" />
+            
+            {/* Card */}
+            <div className="relative bg-card rounded-3xl p-8 md:p-12 shadow-elegant border border-border/50">
+              <form onSubmit={handleSubmit} className="space-y-8">
+                <div className="space-y-5">
+                  <Label className="text-lg md:text-xl font-semibold text-foreground">
+                    Wie möchtest du kontaktiert werden?
+                  </Label>
+                  <RadioGroup
+                    value={contactMethod}
+                    onValueChange={(value) => setContactMethod(value as "email" | "phone")}
+                    className="grid grid-cols-1 sm:grid-cols-2 gap-4"
+                  >
+                    <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                      <RadioGroupItem value="email" id="email" className="peer sr-only" />
+                      <Label
+                        htmlFor="email"
+                        className="flex flex-col items-center justify-center gap-4 rounded-2xl border-2 border-border bg-background/50 p-8 hover:bg-accent/50 peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-gradient-hero peer-data-[state=checked]:shadow-elegant cursor-pointer transition-all duration-300"
+                      >
+                        <div className="w-14 h-14 rounded-xl bg-gradient-warm flex items-center justify-center shadow-soft">
+                          <Mail className="w-7 h-7 text-white" strokeWidth={2} />
+                        </div>
+                        <span className="font-semibold text-lg">E-Mail</span>
+                      </Label>
+                    </motion.div>
+                    
+                    <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                      <RadioGroupItem value="phone" id="phone" className="peer sr-only" />
+                      <Label
+                        htmlFor="phone"
+                        className="flex flex-col items-center justify-center gap-4 rounded-2xl border-2 border-border bg-background/50 p-8 hover:bg-accent/50 peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-gradient-hero peer-data-[state=checked]:shadow-elegant cursor-pointer transition-all duration-300"
+                      >
+                        <div className="w-14 h-14 rounded-xl bg-gradient-warm flex items-center justify-center shadow-soft">
+                          <Phone className="w-7 h-7 text-white" strokeWidth={2} />
+                        </div>
+                        <span className="font-semibold text-lg">SMS</span>
+                      </Label>
+                    </motion.div>
+                  </RadioGroup>
+                </div>
+
+                <div className="space-y-3">
+                  <Label htmlFor="contact" className="text-lg md:text-xl font-semibold text-foreground">
+                    {contactMethod === "email" ? "Deine E-Mail" : "Deine Handynummer"}
+                  </Label>
+                  <Input
+                    id="contact"
+                    type={contactMethod === "email" ? "email" : "tel"}
+                    placeholder={
+                      contactMethod === "email"
+                        ? "beispiel@email.de"
+                        : "+49 123 456789"
+                    }
+                    value={contact}
+                    onChange={(e) => setContact(e.target.value)}
+                    required
+                    className="h-16 text-lg rounded-2xl border-2 focus:border-primary transition-colors bg-background/50"
+                  />
+                </div>
+
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                 >
-                  <div>
-                    <RadioGroupItem value="email" id="email" className="peer sr-only" />
-                    <Label
-                      htmlFor="email"
-                      className="flex flex-col items-center justify-center gap-3 rounded-xl border-2 border-muted bg-background p-6 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary/5 cursor-pointer transition-all"
-                    >
-                      <Mail className="w-8 h-8" />
-                      <span className="font-medium">E-Mail</span>
-                    </Label>
-                  </div>
-                  <div>
-                    <RadioGroupItem value="phone" id="phone" className="peer sr-only" />
-                    <Label
-                      htmlFor="phone"
-                      className="flex flex-col items-center justify-center gap-3 rounded-xl border-2 border-muted bg-background p-6 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary/5 cursor-pointer transition-all"
-                    >
-                      <Phone className="w-8 h-8" />
-                      <span className="font-medium">SMS</span>
-                    </Label>
-                  </div>
-                </RadioGroup>
-              </div>
+                  <Button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="w-full h-16 text-lg bg-gradient-warm hover:shadow-hover transition-all duration-300 rounded-2xl font-semibold shadow-elegant text-white border-0 relative overflow-hidden group"
+                  >
+                    <span className="relative z-10 flex items-center justify-center gap-3">
+                      {isSubmitting ? (
+                        "Wird gesendet..."
+                      ) : (
+                        <>
+                          Community-Link erhalten
+                          <motion.span
+                            animate={{ x: [0, 5, 0] }}
+                            transition={{ duration: 1.5, repeat: Infinity }}
+                          >
+                            <ArrowRight className="w-6 h-6" strokeWidth={2.5} />
+                          </motion.span>
+                        </>
+                      )}
+                    </span>
+                    <div className="absolute inset-0 bg-gradient-to-r from-accent to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  </Button>
+                </motion.div>
+              </form>
 
-              <div className="space-y-2">
-                <Label htmlFor="contact" className="text-lg font-semibold">
-                  {contactMethod === "email" ? "Deine E-Mail" : "Deine Handynummer"}
-                </Label>
-                <Input
-                  id="contact"
-                  type={contactMethod === "email" ? "email" : "tel"}
-                  placeholder={
-                    contactMethod === "email"
-                      ? "beispiel@email.de"
-                      : "+49 123 456789"
-                  }
-                  value={contact}
-                  onChange={(e) => setContact(e.target.value)}
-                  required
-                  className="h-14 text-lg rounded-xl"
-                />
-              </div>
-
-              <Button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full h-14 text-lg bg-gradient-warm hover:opacity-90 transition-opacity rounded-xl font-semibold shadow-warm"
+              <motion.p 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.5 }}
+                className="text-sm md:text-base text-muted-foreground text-center mt-8 leading-relaxed"
               >
-                {isSubmitting ? (
-                  "Wird gesendet..."
-                ) : (
-                  <>
-                    Community-Link erhalten
-                    <ArrowRight className="ml-2 w-5 h-5" />
-                  </>
-                )}
-              </Button>
-            </form>
-
-            <p className="text-sm text-muted-foreground text-center mt-6">
-              Du erhältst eine Nachricht mit einem persönlichen Link zu unserer Community-Webseite
-            </p>
-          </div>
+                Du erhältst eine Nachricht mit einem persönlichen Link zu unserer Community-Webseite
+              </motion.p>
+            </div>
+          </motion.div>
         </motion.div>
       </div>
     </section>
