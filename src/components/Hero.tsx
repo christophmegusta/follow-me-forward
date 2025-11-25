@@ -60,7 +60,7 @@ const Hero = () => {
             delay: 0.5
           }} className="h-1 bg-gradient-warm mx-auto mb-8 rounded-full" />
             
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold mb-8 leading-[1.1] text-foreground tracking-tight">
+            <h1 className="text-5xl md:text-7xl font-bold mb-8 leading-[1.1] text-foreground tracking-tight lg:text-6xl">
               „Ich habe dich bei deinem <span className="text-transparent bg-clip-text bg-gradient-warm">Namen gerufen</span>, du bist mein."
             </h1>
             
