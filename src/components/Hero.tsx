@@ -2,24 +2,10 @@ import { motion } from "framer-motion";
 import heroImage from "@/assets/hero-shepherd.jpg";
 const Hero = () => {
   return <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Scroll Button */}
-      <motion.a
-        href="#community"
-        initial={{ opacity: 0, x: -20 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.8, delay: 1.2 }}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        className="absolute top-8 left-8 z-20 bg-background/80 backdrop-blur-sm text-foreground px-6 py-3 rounded-full text-sm font-semibold shadow-elegant hover:shadow-hover transition-all duration-300 border border-border/20"
-      >
-        Unsere Gemeinschaft
-      </motion.a>
-
       {/* Decorative Background Elements */}
       <div className="absolute inset-0 z-0">
         <img src={heroImage} alt="Spirituelle Landschaft" className="w-full h-full object-cover scale-110" />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-background/40 to-background" />
-        <div className="absolute top-0 left-0 right-0 h-[50vh] bg-gradient-glow opacity-30" />
+        <div className="absolute bottom-0 left-0 right-0 h-[60vh] bg-gradient-to-t from-background via-background/70 to-transparent" />
       </div>
 
       {/* Floating Orbs */}
@@ -64,22 +50,24 @@ const Hero = () => {
           delay: 0.3,
           ease: [0.22, 1, 0.36, 1]
         }} className="mb-12">
-            <motion.div initial={{
-            width: 0
-          }} animate={{
-            width: "100px"
-          }} transition={{
-            duration: 0.8,
-            delay: 0.5
-          }} className="h-1 bg-gradient-warm mx-auto mb-8 rounded-full" />
-            
-            <h1 className="text-5xl md:text-7xl font-bold mb-8 leading-[1.1] text-foreground tracking-tight lg:text-6xl">
-              „Ich habe dich bei deinem <span className="text-transparent bg-clip-text bg-gradient-warm">Namen gerufen</span>, du bist mein."
-            </h1>
-            
-            <p className="text-xl md:text-2xl text-muted-foreground font-light tracking-wide">
-              – Jesaja 43,1
-            </p>
+            <div className="bg-background/90 backdrop-blur-md rounded-3xl p-8 md:p-12 border border-border/30 shadow-2xl">
+              <motion.div initial={{
+              width: 0
+            }} animate={{
+              width: "100px"
+            }} transition={{
+              duration: 0.8,
+              delay: 0.5
+            }} className="h-1 bg-gradient-warm mx-auto mb-8 rounded-full" />
+              
+              <h1 className="text-5xl md:text-7xl font-bold mb-8 leading-[1.1] text-foreground tracking-tight lg:text-6xl">
+                „Ich habe dich bei deinem <span className="text-transparent bg-clip-text bg-gradient-warm">Namen gerufen</span>, du bist mein."
+              </h1>
+              
+              <p className="text-xl md:text-2xl text-muted-foreground font-light tracking-wide">
+                – Jesaja 43,1
+              </p>
+            </div>
           </motion.div>
 
           <motion.div initial={{
@@ -107,12 +95,22 @@ const Hero = () => {
         }} transition={{
           duration: 0.6,
           delay: 1
-        }} className="mt-16">
+        }} className="mt-16 flex flex-wrap gap-4 justify-center items-center">
             <motion.div whileHover={{
             scale: 1.05
           }} whileTap={{
             scale: 0.95
-          }} className="inline-block">
+          }}>
+              <a href="#community" className="group relative inline-flex items-center gap-3 bg-background/80 backdrop-blur-sm text-foreground px-8 py-4 rounded-full text-lg font-semibold shadow-elegant hover:shadow-hover transition-all duration-300 border border-border/30 hover:border-primary/30">
+                <span className="relative z-10">Mehr Information</span>
+              </a>
+            </motion.div>
+            
+            <motion.div whileHover={{
+            scale: 1.05
+          }} whileTap={{
+            scale: 0.95
+          }}>
               <a href="#signup" className="group relative inline-flex items-center gap-3 bg-gradient-warm text-white px-10 py-5 rounded-full text-lg font-semibold shadow-elegant hover:shadow-hover transition-all duration-300 overflow-hidden">
                 <span className="relative z-10">Jetzt Nachfolgen</span>
                 <motion.span animate={{
