@@ -5,10 +5,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useToast } from "@/hooks/use-toast";
-import { Mail, Phone, ArrowRight } from "lucide-react";
+import { MessageCircle, Send, MessageSquare, ArrowRight } from "lucide-react";
 
 const SignupForm = () => {
-  const [contactMethod, setContactMethod] = useState<"email" | "phone">("email");
+  const [contactMethod, setContactMethod] = useState<"whatsapp" | "telegram" | "sms">("whatsapp");
   const [contact, setContact] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
@@ -20,9 +20,15 @@ const SignupForm = () => {
     // Simulate form submission
     await new Promise(resolve => setTimeout(resolve, 1500));
 
+    const methodNames = {
+      whatsapp: "WhatsApp",
+      telegram: "Telegram",
+      sms: "SMS"
+    };
+    
     toast({
       title: "Willkommen in der Gemeinschaft!",
-      description: `Wir haben dir eine Nachricht an ${contact} gesendet mit einem Link zur Community.`,
+      description: `Wir haben dir eine Nachricht per ${methodNames[contactMethod]} an ${contact} gesendet mit einem Link zur Community.`,
     });
 
     setContact("");
@@ -79,30 +85,43 @@ const SignupForm = () => {
                   </Label>
                   <RadioGroup
                     value={contactMethod}
-                    onValueChange={(value) => setContactMethod(value as "email" | "phone")}
-                    className="grid grid-cols-1 sm:grid-cols-2 gap-4"
+                    onValueChange={(value) => setContactMethod(value as "whatsapp" | "telegram" | "sms")}
+                    className="grid grid-cols-1 sm:grid-cols-3 gap-4"
                   >
                     <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                      <RadioGroupItem value="email" id="email" className="peer sr-only" />
+                      <RadioGroupItem value="whatsapp" id="whatsapp" className="peer sr-only" />
                       <Label
-                        htmlFor="email"
+                        htmlFor="whatsapp"
                         className="flex flex-col items-center justify-center gap-4 rounded-2xl border-2 border-border bg-background/50 p-8 hover:bg-accent/50 peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-gradient-hero peer-data-[state=checked]:shadow-elegant cursor-pointer transition-all duration-300"
                       >
                         <div className="w-14 h-14 rounded-xl bg-gradient-warm flex items-center justify-center shadow-soft">
-                          <Mail className="w-7 h-7 text-white" strokeWidth={2} />
+                          <MessageCircle className="w-7 h-7 text-white" strokeWidth={2} />
                         </div>
-                        <span className="font-semibold text-lg">E-Mail</span>
+                        <span className="font-semibold text-lg">WhatsApp</span>
                       </Label>
                     </motion.div>
                     
                     <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                      <RadioGroupItem value="phone" id="phone" className="peer sr-only" />
+                      <RadioGroupItem value="telegram" id="telegram" className="peer sr-only" />
                       <Label
-                        htmlFor="phone"
+                        htmlFor="telegram"
                         className="flex flex-col items-center justify-center gap-4 rounded-2xl border-2 border-border bg-background/50 p-8 hover:bg-accent/50 peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-gradient-hero peer-data-[state=checked]:shadow-elegant cursor-pointer transition-all duration-300"
                       >
                         <div className="w-14 h-14 rounded-xl bg-gradient-warm flex items-center justify-center shadow-soft">
-                          <Phone className="w-7 h-7 text-white" strokeWidth={2} />
+                          <Send className="w-7 h-7 text-white" strokeWidth={2} />
+                        </div>
+                        <span className="font-semibold text-lg">Telegram</span>
+                      </Label>
+                    </motion.div>
+
+                    <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                      <RadioGroupItem value="sms" id="sms" className="peer sr-only" />
+                      <Label
+                        htmlFor="sms"
+                        className="flex flex-col items-center justify-center gap-4 rounded-2xl border-2 border-border bg-background/50 p-8 hover:bg-accent/50 peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-gradient-hero peer-data-[state=checked]:shadow-elegant cursor-pointer transition-all duration-300"
+                      >
+                        <div className="w-14 h-14 rounded-xl bg-gradient-warm flex items-center justify-center shadow-soft">
+                          <MessageSquare className="w-7 h-7 text-white" strokeWidth={2} />
                         </div>
                         <span className="font-semibold text-lg">SMS</span>
                       </Label>
@@ -112,16 +131,12 @@ const SignupForm = () => {
 
                 <div className="space-y-3">
                   <Label htmlFor="contact" className="text-lg md:text-xl font-semibold text-foreground">
-                    {contactMethod === "email" ? "Deine E-Mail" : "Deine Handynummer"}
+                    Deine Handynummer
                   </Label>
                   <Input
                     id="contact"
-                    type={contactMethod === "email" ? "email" : "tel"}
-                    placeholder={
-                      contactMethod === "email"
-                        ? "beispiel@email.de"
-                        : "+49 123 456789"
-                    }
+                    type="tel"
+                    placeholder="+49 123 456789"
                     value={contact}
                     onChange={(e) => setContact(e.target.value)}
                     required
@@ -158,14 +173,22 @@ const SignupForm = () => {
                 </motion.div>
               </form>
 
-              <motion.p 
+              <motion.div 
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.5 }}
-                className="text-sm md:text-base text-muted-foreground text-center mt-8 leading-relaxed"
+                className="mt-8 space-y-4"
               >
-                Du erhältst eine Nachricht mit einem persönlichen Link zu unserer Community-Webseite
-              </motion.p>
+                <p className="text-sm md:text-base text-muted-foreground text-center leading-relaxed">
+                  Du erhältst eine Nachricht mit einem persönlichen Link zu unserer Community-Webseite
+                </p>
+                <div className="bg-muted/30 rounded-2xl p-6 border border-border/50">
+                  <p className="text-xs md:text-sm text-muted-foreground text-center leading-relaxed">
+                    🔒 <strong>Datenschutz:</strong> Deine Nummer wird nicht gespeichert und es wird keinerlei Werbung verschickt. 
+                    Du erhältst ausschließlich den Link zur Community zum Schutz der Gemeinschaft.
+                  </p>
+                </div>
+              </motion.div>
             </div>
           </motion.div>
         </motion.div>
