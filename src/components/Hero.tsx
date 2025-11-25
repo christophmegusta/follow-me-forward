@@ -2,11 +2,24 @@ import { motion } from "framer-motion";
 import heroImage from "@/assets/hero-shepherd.jpg";
 const Hero = () => {
   return <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Scroll Button */}
+      <motion.a
+        href="#community"
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.8, delay: 1.2 }}
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        className="absolute top-8 left-8 z-20 bg-background/80 backdrop-blur-sm text-foreground px-6 py-3 rounded-full text-sm font-semibold shadow-elegant hover:shadow-hover transition-all duration-300 border border-border/20"
+      >
+        Unsere Gemeinschaft
+      </motion.a>
+
       {/* Decorative Background Elements */}
       <div className="absolute inset-0 z-0">
         <img src={heroImage} alt="Spirituelle Landschaft" className="w-full h-full object-cover scale-110" />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/50 via-background/70 to-background" />
-        <div className="absolute top-0 left-0 right-0 h-[50vh] bg-gradient-glow" />
+        <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-background/40 to-background" />
+        <div className="absolute top-0 left-0 right-0 h-[50vh] bg-gradient-glow opacity-30" />
       </div>
 
       {/* Floating Orbs */}

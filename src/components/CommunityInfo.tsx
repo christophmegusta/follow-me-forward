@@ -47,7 +47,7 @@ const CommunityInfo = () => {
   };
 
   return (
-    <section className="py-24 md:py-40 relative overflow-hidden">
+    <section id="community" className="py-24 md:py-40 relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-[0.03]">
         <div className="absolute inset-0" style={{
