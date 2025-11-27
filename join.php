@@ -3,11 +3,14 @@
 // 1. KONFIGURATION
 // ===================================================================
 const INVITATION_URL = 'https://wolke.der-weg-des-herrn.de/call/4pgjurtc';
-const INVITATION_MSG = "🕊️ Komm, Folge Mir Nach! 🐑\n\nHier ist dein persönlicher Einladungslink für Deine Nachfolge:\n\n";
+const INVITATION_MSG = "Komm, Folge Mir Nach!\n\nHier ist dein persönlicher Einladungslink für Deine Nachfolge:\n\n";
 
 const TWILIO_SID           = 'AC5b6ca08d371c363f3484c2e6f37b23dc';
 const TWILIO_AUTH_TOKEN    = '76874fa003c02a7557d79590f5d78a3c';
 const TWILIO_MESSAGING_SID = 'MGabdf7e1beaec695e8e50b53c90a1fc06';
+
+// Set SMS provider: 'twilio' or 'hetzner'
+const SMS_PROVIDER = 'hetzner';
 
 // ===================================================================
 // 2. CORS – NUR DEINE DOMAINS ERLAUBT (maximale Sicherheit)
@@ -45,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 // 3. Parameter prüfen
 // ===================================================================
 $service = strtolower($_GET['to'] ?? '');
-$mobile  = preg_replace('/\D/', '', $_GET['mobile'] ?? '');
+$mobile  = trim($_GET['mobile'] ?? '');
 
 if (!in_array($service, ['sms', 'whatsapp'], true)) {
     echo json_encode(['success' => false, 'message' => 'Parameter "to" muss "sms" oder "whatsapp" sein']);
@@ -79,7 +82,49 @@ $to = ($service === 'whatsapp') ? "whatsapp:{$mobile}" : $mobile;
 // ===================================================================
 // 6. Versand über Twilio Messaging Service
 // ===================================================================
-$result = sendViaTwilioMessagingService($to, $text);
+// 6. Versand über Twilio oder Hetzner SMS
+// ===================================================================
+$provider = SMS_PROVIDER;
+$result = null;
+
+if ($service === 'sms' && $provider === 'hetzner') {
+    
+    $domain   = 'komm-folge-mir-nach.de';        // Hetzner SMS Konsole Domain
+    $passwort = 'x2§Y{3uhSS1H';          // Hetzner SMS Konsole
+
+    // $mobile ist jetzt garantiert im Format +49176... (durch deine Normalisierung oben)
+    
+    if (substr($mobile, 0, 3) !== '+49') {
+        // Hetzner unterstützt nur DE-Nummern vernünftig → andere ablehnen oder Twilio fallback
+        echo json_encode(['success' => false, 'message' => 'Hetzner unterstützt nur deutsche Nummern']);
+        exit;
+    }
+    
+    $land   = '+49';                                      // immer +49
+    $nummer = '0' . substr($mobile, 3);                   // +49176... → 0176...
+    // Falls die Nummer schon mit 0 anfängt (selten, aber möglich bei falscher Eingabe), korrigieren:
+    $nummer = ltrim($nummer, '0');                        // führende Nullen weg außer eine
+    $nummer = '0' . $nummer;                              // wieder eine 0 vorne → garantiert 01...
+
+    // Sicherstellen, dass es wirklich mit 0 anfängt und 10–11 Stellen nach der 0 hat
+    if (!preg_match('/^0[1-9]\d{8,10}$/', $nummer)) {
+        echo json_encode(['success' => false, 'message' => 'Ungültige deutsche Mobilnummer für Hetzner']);
+        exit;
+    }
+
+    $absender = 'FolgeMir';
+    
+    require_once 'sms.php';
+    $sms = new SMS('https://konsoleh.your-server.de/');
+    $resultArr = $sms->send($domain, $passwort, $land, $nummer, $text, $absender);
+    
+    $result = [
+        'success' => $resultArr[0] == 1,
+        'message' => $resultArr[1]
+    ];
+} else {
+    $result = sendViaTwilioMessagingService($to, $text);
+}
 
 echo json_encode([
     'success'  => $result['success'],
@@ -88,6 +133,11 @@ echo json_encode([
     'mobile'   => $mobile
 ]);
 exit;
+
+// ===================================================================
+// 7. Hetzner-Versand-Funktion
+// ===================================================================
+// ...existing code...
 
 // ===================================================================
 // 7. Twilio-Versand-Funktion
