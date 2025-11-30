@@ -2,8 +2,9 @@
 // ===================================================================
 // 1. KONFIGURATION
 // ===================================================================
-const INVITATION_URL = 'https://wolke.der-weg-des-herrn.de/call/4pgjurtc';
-const INVITATION_MSG = "Komm, Folge Mir Nach!\n\nHier ist dein persönlicher Einladungslink für Deine Nachfolge:\n\n";
+//const INVITATION_URL = 'https://wolke.der-weg-des-herrn.de/call/4pgjurtc';
+const INVITATION_URL = 'https://wolke.der-weg-des-herrn.de/apps/collectives/p/mp424wr7cXHNdC5/Gemeinschaft-2';
+const INVITATION_MSG = "Komm, Folge Mir Nach!\n\nHier ist Dein Einladungslink für Deine Nachfolge:\n\n";
 
 const TWILIO_SID           = 'AC5b6ca08d371c363f3484c2e6f37b23dc';
 const TWILIO_AUTH_TOKEN    = '76874fa003c02a7557d79590f5d78a3c';
